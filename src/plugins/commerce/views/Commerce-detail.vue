@@ -1,65 +1,87 @@
 <template>
   <div>
-    <d-row>
-      <div v-for="commerce in commerces" class="card-container">
-        <d-col lg="12">
-          <d-card style="max-width: 300px">
-            <d-card-header></d-card-header>
-            <d-link :to="'/commerce-detail?id=' + commerce.id">
-              <d-card-img :src="commerce.image" class="item-img"/>
-            </d-link>
-            <d-card-body>
-              <d-link :to="'/commerce-detail?id=' + commerce.id">
-                <h4>{{commerce.name}}</h4>
-              </d-link>
-              <d-row>
-                <d-col lg="4" md="4" sm="4">
-                  <d-input type="number" placeholder="Qty" value="1" :id="commerce.id"></d-input>
-                </d-col>
-              </d-row>
-              <br>
-              <d-btn theme="primary" v-on:click="addToCart(commerce.id, commerce.name, commerce.price, commerce.qty)">Add to cart &rarr;</d-btn>
-            </d-card-body>
-            <d-card-footer>Rp. {{commerce.price}}</d-card-footer>
+    <d-container fluid class="main-content-container px-4">
+      <d-row class="mt-4">
+        <d-col lg="4" sm="12">
+          <d-card class="card-small user-details mb-4">
+            <img :src="commerce.image">
           </d-card>
         </d-col>
-      </div>
-    </d-row>
-    <div class="row cart col-lg-5" v-if="carts">
-      <div class="col">
-        <div class="card card-small mb-4">
-          <div class="card-header border-bottom">
-            <h6 class="m-0">Shopping Cart</h6>
-          </div>
-          <div class="card-body p-0 pb-3">
-            <table class="table mb-0">
-              <thead class="bg-light">
-                <tr>
-                  <th scope="col" class="border-0">Item Name</th>
-                  <th scope="col" class="border-0">Qty</th>
-                  <th scope="col" class="border-0">Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="cart in carts">
-                  <td>{{cart.itemName}}</td>
-                  <td>{{cart.itemQty}}</td>
-                  <td>{{cart.totalPrice}}</td>
-                </tr>
-                <tr>
-                  <td>Total:</td>
-                  <td></td>
-                  <td>{{totalShoppingPrice}}</td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="text-center">
-              <d-button v-if="carts" v-on:click="buyItem()">Checkout &rarr;</d-button>
+        <d-col lg="3" sm="12">
+          <d-card class="card-small user-details mb-4">
+
+            <h4 class="text-center m-0 mt-2 p-3">{{ commerce.name }}</h4>
+
+            <div class="user-details__user-data border-top border-bottom p-4">
+              <div class="row mb-3">
+                <div class="col w-100">
+                  <span>Description</span>
+                  <span>{{ commerce.description }}</span>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col w-100">
+                  <span>Price</span>
+                  <span>Rp. {{ commerce.price }}</span>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col w-100">
+                  <span>Qty</span>
+                  <d-row>
+                    <d-col lg="3" md="3" sm="3">
+                      <d-input type="number" placeholder="Qty" value="1" :id="commerce._id"></d-input>
+                    </d-col>
+                  </d-row>
+                </div>
+              </div>
+            </div>
+            <div class="p-4">
+              <div class="row mb-3">
+                <div class="col w-100">
+                  <d-btn theme="primary" v-on:click="addToCart(commerce._id, commerce.name, commerce.price, commerce.qty)">Add to cart &rarr;</d-btn>
+                </div>
+              </div>
+            </div>
+          </d-card>
+        </d-col>
+        <div class="row cart col-lg-5" v-if="carts">
+          <div class="col">
+            <div class="card card-small mb-4">
+              <div class="card-header border-bottom">
+                <h6 class="m-0">Shopping Cart</h6>
+              </div>
+              <div class="card-body p-0 pb-3">
+                <table class="table mb-0">
+                  <thead class="bg-light">
+                    <tr>
+                      <th scope="col" class="border-0">Item Name</th>
+                      <th scope="col" class="border-0">Qty</th>
+                      <th scope="col" class="border-0">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="cart in carts">
+                      <td>{{cart.itemName}}</td>
+                      <td>{{cart.itemQty}}</td>
+                      <td>{{cart.totalPrice}}</td>
+                    </tr>
+                    <tr>
+                      <td>Total:</td>
+                      <td></td>
+                      <td>{{totalShoppingPrice}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="text-center">
+                  <d-button v-if="carts" v-on:click="buyItem()">Checkout &rarr;</d-button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </d-row>
+    </d-container>
   </div>
 </template>
 
@@ -76,7 +98,7 @@ export default {
           input: {
             qty: ""
           },
-          commerces: [],
+          commerce: {},
           carts: [],
           totalShoppingPrice: 0
       }
@@ -84,15 +106,16 @@ export default {
 
   created: function()
   {
-      this.fetchItems();
+      this.fetchCommerce();
       this.fetchShoppingCart();
   },
 
   methods: {
-      fetchItems() {
+      fetchCommerce() {
+        let id = window.location.href.split("?id=")[1];
         this.axios.get(address + ":3000/get-commerce", headers).then((response) => {
-          let query = `query getAllCommerce {
-            commerces {
+          let query = `query getSingleItem($itemId: String!) {
+            commerce(_id: $itemId) {
               _id
               name
               price
@@ -102,18 +125,11 @@ export default {
               image
             }
           }`;
-          graphqlFunction.graphqlFetchAll(query, (result) => {
-            for(var i = 0; i < result.commerces.length; i++) {
-              this.commerces.push({
-                id: result.commerces[i]._id,
-                name: result.commerces[i].name,
-                price: result.commerces[i].price,
-                qty: result.commerces[i].qty,
-                description: result.commerces[i].description.substr(0,30) + '...',
-                user: result.commerces[i].user,
-                image: result.commerces[i].image
-              });
-            }
+          let variable = {
+            itemId: id
+          };
+          graphqlFunction.graphqlFetchOne(query, variable, (result) => {
+            this.commerce = result.commerce
           });
         });
       },
@@ -184,7 +200,7 @@ export default {
                   alert("Add Transaction Success");
                   this.$router.push('/buy-commerce');
                   this.fetchShoppingCart();
-                  this.fetchItems();
+                  this.fetchCommerce();
                   location.reload();
                 }
               });

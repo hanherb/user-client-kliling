@@ -104,6 +104,11 @@ export default new Router({
       component: () => import('./plugins/commerce/views/Buy-commerce.vue'),
     },
     {
+      path: '/commerce-detail',
+      name: 'commerce-detail',
+      component: () => import('./plugins/commerce/views/Commerce-detail.vue'),
+    },
+    {
       path: '/patient-consult',
       name: 'patient-consult',
       component: () => import('./plugins/consult/views/Patient-consult.vue'),
