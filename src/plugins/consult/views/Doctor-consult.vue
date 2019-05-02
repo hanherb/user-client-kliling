@@ -42,7 +42,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td class="lo-stats__items text-center">{{ ongoingConsultDetail.doctor_name }}</td>
+                  <td class="lo-stats__items text-center">{{ ongoingConsultDetail.patient_name }}</td>
                   <td class="lo-stats__items text-center">{{ ongoingConsultDetail.checkin_date }}</td>
                   <td class="lo-stats__status">
                     <div class="d-table mx-auto">
