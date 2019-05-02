@@ -4,7 +4,7 @@
       <d-row class="mt-4">
         <d-col lg="4" sm="12">
           <d-card class="card-small user-details mb-4">
-            <img :src="commerce.image">
+            <img class="item-img-detail" :src="commerce.image">
           </d-card>
         </d-col>
         <d-col lg="3" sm="12">
@@ -236,9 +236,9 @@ export default {
 </script>
 
 <style type="text/css">
-  .item-img {
-    width: 300px;
-    height: 200px;
+  .item-img-detail {
+    width: 604px;
+    height: 350px;
   }
   .card-container {
     padding-top: 5px;
