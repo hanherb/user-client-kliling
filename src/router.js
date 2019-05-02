@@ -1,14 +1,13 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Analytics from './views/Analytics.vue';
 import OnlineStore from './views/OnlineStore.vue';
 import HeaderNavigation from './views/HeaderNavigation.vue';
 import IconSidebarNav from './views/IconSidebarNav.vue';
 import PersonalBlog from './views/PersonalBlog.vue';
-import UserProfile from './views/UserProfile.vue';
 import EditUserProfile from './views/EditUserProfile.vue';
 import Home from './views/Home.vue';
+import Front from './views/Front.vue';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 import ForgotPassword from './views/ForgotPassword.vue';
@@ -36,29 +35,19 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: '/home',
-      meta: { layout: 'non-admin' },
+      name: 'front',
+      meta: { layout: 'no-session' },
+      component: Front,
+    },
+    {
+      path: '/home',
+      name: 'home',
       component: Home,
-    },
-    {
-      path: '/analytics',
-      name: 'analytics',
-      component: Analytics,
-    },
-    {
-      path: '/ecommerce',
-      name: 'ecommerce',
-      component: OnlineStore,
-    },
-    {
-      path: '/blog-overview',
-      name: 'blog-overview',
-      component: PersonalBlog,
     },
     {
       path: '/user-profile',
       name: 'user-profile',
-      component: UserProfile,
+      component: () => import('./views/UserProfile.vue'),
     },
     {
       path: '/edit-user-profile',
@@ -68,13 +57,13 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      meta: { layout: 'non-admin' },
+      meta: { layout: 'no-session' },
       component: Login,
     },
     {
       path: '/register',
       name: 'register',
-      meta: { layout: 'non-admin' },
+      meta: { layout: 'no-session' },
       component: Register,
     },
     {
@@ -90,29 +79,39 @@ export default new Router({
       component: ChangePassword,
     },
     {
-      path: '/users',
-      name: 'users',
-      component: () => import('./views/Users.vue'),
+      path: '/blog',
+      name: 'blog',
+      component: () => import('./plugins/blog/views/Blog.vue'),
     },
     {
-      path: '/add-user',
-      name: 'add-user',
-      component: () => import('./views/AddUser.vue'),
+      path: '/add-blog',
+      name: 'add-blog',
+      component: () => import('./plugins/blog/views/Add-blog.vue'),
     },
     {
-      path: '/update-user',
-      name: 'update-user',
-      component: () => import('./views/UpdateUser.vue'),
+      path: '/update-blog',
+      name: 'update-blog',
+      component: () => import('./plugins/blog/views/Update-blog.vue'),
     },
     {
-      path: '/delete-user',
-      name: 'delete-user',
-      component: () => import('./views/DeleteUser.vue'),
+      path: '/delete-blog',
+      name: 'delete-blog',
+      component: () => import('./plugins/blog/views/Delete-blog.vue'),
     },
     {
-      path: '/importcsv',
-      name: 'importcsv',
-      component: () => import('./views/ImportCsv.vue'),
+      path: '/buy-commerce',
+      name: 'buy-commerce',
+      component: () => import('./plugins/commerce/views/Buy-commerce.vue'),
+    },
+    {
+      path: '/patient-consult',
+      name: 'patient-consult',
+      component: () => import('./plugins/consult/views/Patient-consult.vue'),
+    },
+    {
+      path: '/doctor-consult',
+      name: 'doctor-consult',
+      component: () => import('./plugins/consult/views/Doctor-consult.vue'),
     },
     {
       path: '/file-manager-list',

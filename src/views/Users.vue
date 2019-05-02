@@ -1,48 +1,75 @@
 <template lang="pug">
-  div( class="main-content-container container-fluid px-4")
-    <!-- Page Header -->
-    div( class="page-header row no-gutters py-4")
-      div( class="col-12 col-sm-4 text-center text-sm-left mb-0")
-        span( class="text-uppercase page-subtitle") Overview
-        h3( class="page-title") Data Tables
-    <!-- Default Light Table -->
-    div( class="row")
-      div( class="col")
-        div( class="card card-small mb-4")
-          div( class="card-header border-bottom")
-            h6( class="m-0") Active Users
-          div( class="card-body p-0 pb-3 text-center")
-            table( class="table mb-0")
-              thead( class="bg-light")
-                tr
-                  th( scope="col" class="border-0") Fullname
-                  th( scope="col" class="border-0") Email
-                  th( scope="col" class="border-0") Role
-                  th( scope="col" class="border-0") Action
-              tbody
-                tr( v-for="user in users")
-                  td {{user.fullname}}
-                  td {{user.email}}
-                  td {{user.role}}
-                  td
-                    d-link( :to="'/update-user?id=' + user._id") 
-                      d-button( theme="success") Update
-                    d-link( :to="'/delete-user?id=' + user._id") 
-                      d-button( theme="danger") Delete
-            d-link( to="/add-user") 
-              d-button( theme="primary") Add
+  <d-container fluid class="main-content-container px-4 pb-4">
+    <v-client-table class="dataTables_wrapper" :data="tableData" :columns="columns" :options="clientTableOptions">
+      <!-- Actions Column Slot -->
+      <d-button-group slot="actions" slot-scope="props" size="small" class="d-flex justify-content-center">
+        <d-link :to="'/update-user?id=' + props.row._id">
+          <d-button class="btn-white" v-d-tooltip.hover="'Edit'">
+            <i class="material-icons">&#xE254;</i>
+          </d-button>
+        </d-link>
+        <d-link :to="'/delete-user?id=' + props.row._id">
+          <d-button class="btn-white" v-d-tooltip.hover="'Delete'">
+            <i class="material-icons">&#xE872;</i>
+          </d-button>
+        </d-link>
+      </d-button-group>
+
+      <!-- Status Column Slot -->
+      <span slot="status" slot-scope="props" :class="[getStatusClass(props.row.status)]">
+        <!-- {{ props.row.status }} -->
+      </span>
+
+      <!-- Total Column Slot -->
+      <span slot="total" slot-scope="props" class="text-success">
+        <!-- {{ props.row.total }} -->
+      </span>
+    </v-client-table>
+    <d-link to="/add-user">
+      <d-button class="btn-white" v-d-tooltip.hover="'Add'">
+        <i class="material-icons">&#xe145;</i>
+      </d-button>
+    </d-link>
+  </d-container>
 </template>
 <script>
 import graphqlFunction from '@/graphqlFunction';
 import basicFunction from '@/basicFunction';
 import address from '@/address';
 import headers from '@/headers';
+import Vue from 'vue';
+import { ClientTable } from 'vue-tables-2';
+import '@/assets/scss/vue-tables.scss';
+
+Vue.use(ClientTable);
 
 export default {
-  name: 'data-table',
+  name: 'user-table',
+  components: {
+    ClientTable,
+  },
   data(){
     return{
-      users: [],
+      columns: ['fullname', 'email', 'role', 'actions'],
+      tableData: [],
+      clientTableOptions: {
+        perPage: 10,
+        recordsPerPage: [10, 25, 50, 100],
+        skin: 'transaction-history table dataTable',
+        sortIcon: {
+          base: 'fas float-right mt-1 text-muted',
+          up: 'fa-caret-up',
+          down: 'fa-caret-down',
+        },
+        texts: {
+          filterPlaceholder: '',
+          limit: 'Show',
+        },
+        pagination: {
+          edge: true,
+          nav: 'scroll',
+        },
+      },
     }
   },
 
@@ -64,10 +91,22 @@ export default {
           }
         }`;
         graphqlFunction.graphqlFetchAll(query, (result) => {
-          this.users = result.users;
+          this.tableData = result.users;
         });
       })
-    }
+    },
+    handleActionClick(type, id) {
+      alert(`You have ${type} item ${id}`); // eslint-disable-line no-alert
+    },
+    getStatusClass(status) {
+      const map = {
+        Pending: 'warning',
+        Complete: 'success',
+        Cancelled: 'danger',
+      };
+
+      return `text-${map[status]}`;
+    },
   }
 }
 </script>

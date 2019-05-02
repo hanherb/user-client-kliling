@@ -18,9 +18,9 @@
           d-checkbox( label="update" v-model="input.authority" value="update") Update
         div
           d-checkbox( label="delete" v-model="input.authority" value="delete") Delete
-        <!-- label API Authority
+        label API Authority
         div( v-for="plugin in plugins")
-          d-checkbox( :label="plugin.name" v-model="input.authority" :value="plugin.name") {{plugin.name}} -->
+          d-checkbox( :label="plugin.name" v-model="input.authority" :value="plugin.name") {{plugin.name}}
       .form-group
         label Password
         d-input( type="password" v-model="input.password" placeholder="Password")

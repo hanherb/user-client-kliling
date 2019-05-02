@@ -48,7 +48,7 @@ export default {
        */
     copyright: {
       type: String,
-      default: 'Copyright © 2019 - BIMUS ESDM',
+      default: 'Copyright © 2019 - KLILING',
     },
     /**
        * Whether the footer should be wrapped in a container, or not.

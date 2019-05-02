@@ -17,7 +17,7 @@ import router from './router';
 
 // Layouts
 import Default from '@/layouts/Default.vue';
-import NonAdmin from '@/layouts/NonAdmin.vue';
+import NoSession from '@/layouts/NoSession.vue';
 import HeaderNavigation from '@/layouts/HeaderNavigation.vue';
 import IconSidebar from '@/layouts/IconSidebar.vue';
 
@@ -26,7 +26,7 @@ const isProd = process.env.NODE_ENV === 'production';
 ShardsVue.install(Vue);
 
 Vue.component('default-layout', Default);
-Vue.component('non-admin-layout',NonAdmin);
+Vue.component('no-session-layout',NoSession);
 Vue.component('header-navigation-layout', HeaderNavigation);
 Vue.component('icon-sidebar-layout', IconSidebar);
 
@@ -43,56 +43,13 @@ Vue.use(VueAnalytics, {
 });
 
 router.beforeEach((to, from, next) => {
-    var user_role = localStorage.getItem('user_role');
-    var user_authority = localStorage.getItem('user_authority').split(',');
-    if(to.path == '/add-user') {
-        for(var i = 0; i <= user_authority.length; i++) {
-            if(i == user_authority.length) {
-                next({
-                    path: '/not-authenticated',
-                })
-            }
-            else {
-                if(user_authority[i] == 'create') {
-                    next();
-                    break;
-                }
-            }
-        }
+    if(localStorage.getItem('user_role')) {
+        var user_role = localStorage.getItem('user_role');
     }
-    else if(to.path == '/update-user') {
-        for(var i = 0; i <= user_authority.length; i++) {
-            if(i == user_authority.length) {
-                next({
-                    path: '/not-authenticated',
-                })
-            }
-            else {
-                if(user_authority[i] == 'update') {
-                    next();
-                    break;
-                }
-            }
-        }
+    if(localStorage.getItem('user_authority')) {
+        var user_authority = localStorage.getItem('user_authority').split(',');
     }
-    else if(to.path == '/delete-user') {
-        for(var i = 0; i <= user_authority.length; i++) {
-            if(i == user_authority.length) {
-                next({
-                    path: '/not-authenticated',
-                })
-            }
-            else {
-                if(user_authority[i] == 'delete') {
-                    next();
-                    break;
-                }
-            }
-        }
-    }
-    else {
-        next();
-    }
+    next();
 });
 
 new Vue({

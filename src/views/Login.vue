@@ -70,8 +70,7 @@ export default {
           console.log(response.data);
           if(response.data.token) {
             alert("Login Success");
-            this.$router.push('/analytics');
-            location.reload();
+            this.$router.push('/home');
             this.$session.start();
             this.$session.set('user', response.data.response);
             document.cookie = "token=" + response.data.token;

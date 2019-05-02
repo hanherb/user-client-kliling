@@ -1,4 +1,7 @@
 module.exports = {
-  baseUrl: '/admin/',
-  transpileDependencies: ['shards-vue'],
+	baseUrl: '',
+  	devServer: {
+		port: 8081
+	},
+	transpileDependencies: ['shards-vue'],
 };

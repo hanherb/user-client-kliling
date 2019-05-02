@@ -1,7 +1,6 @@
-<template lang='pug'>
-d-container.h-100
-	d-link.btn( to="/login") Sign In
-	d-link.btn( to="/register") Sign Up
+<template lang="pug">
+div( class="home")
+	h1 Home
 </template>
 
 <script>
@@ -12,7 +11,6 @@ export default {
 };
 </script>
 
-<style lang='stylus' scoped>
-.home
-  background-color:rgba(255,255,255,0.7)
+<style>
+	
 </style>

@@ -17,12 +17,6 @@ export default function () {
         name: 'users',
       },
     }, {
-      title: 'Import CSV',
-      htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
-      to: {
-        name: 'importcsv',
-      },
-    },{
       title: 'Companies',
       htmlBefore: '<i class="material-icons">&#xE7FD;</i>',
       to: {

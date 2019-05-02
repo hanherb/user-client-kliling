@@ -3,7 +3,7 @@
     d-row.h-50(align-v='center', align-h='center')
       h4 Delete {{user.fullname}} ?
     d-row(align-v='center', align-h='center')
-      d-link( to="/admin/users")
+      d-link( to="/users")
         d-button( pill) &larr; Cancel
       d-button( theme="danger" v-on:click="deleteUser()" pill) Delete
 </template>

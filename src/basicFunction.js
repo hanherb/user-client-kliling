@@ -39,6 +39,10 @@ let basicFunction = {
     	return string.charAt(0).toUpperCase() + string.slice(1);
 	},
 
+	numberWithCommas: function(x) {
+    	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	},
+
 	deleteAllCookies: function() {
 	    let cookies = document.cookie.split(";");
 

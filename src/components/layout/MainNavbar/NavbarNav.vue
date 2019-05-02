@@ -1,5 +1,25 @@
 <template>
   <d-navbar-nav class="flex-row">
+    <li class="nav-item dropdown">
+      <a class="nav-link text-nowrap px-3" href="/" style="line-height: 40px;">
+        <span class="d-none d-md-inline ml-1">Home</span>
+      </a>
+    </li>
+    <li class="nav-item dropdown" v-if="session.role != 'doctor'">
+      <a class="nav-link text-nowrap px-3" href="/patient-consult" style="line-height: 40px;">
+        <span class="d-none d-md-inline ml-1">Consult</span>
+      </a>
+    </li>
+    <li class="nav-item dropdown" v-if="session.role == 'doctor'">
+      <a class="nav-link text-nowrap px-3" href="/doctor-consult" style="line-height: 40px;">
+        <span class="d-none d-md-inline ml-1">Consult</span>
+      </a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link text-nowrap px-3" href="/buy-commerce" style="line-height: 40px;">
+        <span class="d-none d-md-inline ml-1">Shop</span>
+      </a>
+    </li>
     <li class="nav-item border-left border-right dropdown notifications">
       <a class="nav-link nav-link-icon text-center" v-d-toggle.notifications>
         <div class="nav-link-icon__wrapper">
